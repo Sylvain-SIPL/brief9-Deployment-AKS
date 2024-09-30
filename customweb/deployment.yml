@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginxcustom-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginxcustom
+  template:
+    metadata:
+      labels:
+        app: nginxcustom
+    spec:
+      containers:
+      - name: nginxcustom-container
+        image: docker.io/sylvain5929/nginx-custom:latest
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginxcustom-service
+spec:
+  selector:
+    app: nginxcustom
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
